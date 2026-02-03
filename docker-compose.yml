@@ -5,13 +5,30 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./data:/var/www/html/data
-      - ./assets:/var/www/html/assets
+      - .:/var/www/html
     environment:
       - ADMIN_PASSWORD=${ADMIN_PASSWORD:-makerslab2024}
       - CONTACT_EMAIL=${CONTACT_EMAIL:-kontakt@makerslab.pl}
       - CONTACT_PHONE=${CONTACT_PHONE:-+48 123 456 789}
       - SITE_URL=${SITE_URL:-http://localhost:8080}
+      - SITE_NAME=${SITE_NAME:-MakersLab}
+      - SITE_TAGLINE=${SITE_TAGLINE:-Warsztaty robotyki i elektroniki dla dzieci}
+      - SITE_DESCRIPTION=${SITE_DESCRIPTION:-Warsztaty robotyki i elektroniki dla dzieci w Trójmieście i online. Arduino, programowanie, prototypy - nauka przez projekty.}
+      - SITE_KEYWORDS=${SITE_KEYWORDS:-robotyka, elektronika, dzieci, warsztaty, arduino, programowanie, trójmiasto}
+      - CONTACT_LOCATION=${CONTACT_LOCATION:-Trójmiasto / Online}
+      - SOCIAL_FACEBOOK=${SOCIAL_FACEBOOK:-https://facebook.com/makerslab}
+      - SOCIAL_INSTAGRAM=${SOCIAL_INSTAGRAM:-https://instagram.com/makerslab}
+      - SOCIAL_YOUTUBE=${SOCIAL_YOUTUBE:-https://youtube.com/@makerslab}
+      - TIMEZONE=${TIMEZONE:-Europe/Warsaw}
+      - DEBUG_MODE=${DEBUG_MODE:-false}
+      - GA_ID=${GA_ID:-}
+      - SESSION_LIFETIME=${SESSION_LIFETIME:-3600}
+      - EMAIL_NOTIFICATIONS=${EMAIL_NOTIFICATIONS:-false}
+      - EMAIL_SUBJECT=${EMAIL_SUBJECT:-Nowe zgłoszenie MakersLab}
+      - PHP_MEMORY_LIMIT=${PHP_MEMORY_LIMIT:-256M}
+      - PHP_UPLOAD_MAX_FILESIZE=${PHP_UPLOAD_MAX_FILESIZE:-64M}
+      - PHP_POST_MAX_SIZE=${PHP_POST_MAX_SIZE:-64M}
+      - PHP_MAX_EXECUTION_TIME=${PHP_MAX_EXECUTION_TIME:-300}
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:80"]

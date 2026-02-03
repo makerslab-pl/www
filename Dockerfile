@@ -1,5 +1,5 @@
-# Use PHP 8.1 Apache image
-FROM php:8.1-apache-bullseye
+# Use PHP 8.4 Apache image
+FROM php:8.4-apache-bookworm
 
 # Install required extensions and curl for healthcheck
 RUN apt-get update && apt-get install -y \
@@ -7,7 +7,11 @@ RUN apt-get update && apt-get install -y \
     curl \
     unzip \
     libxml2-dev \
-    && docker-php-ext-install pdo_sqlite dom \
+    libzip-dev \
+    zip \
+    && docker-php-ext-install pdo_sqlite dom xml xmlwriter mbstring tokenizer \
+    && docker-php-ext-configure zip --with-libzip \
+    && docker-php-ext-install zip \
     && rm -rf /var/lib/apt/lists/*
 
 # Enable Apache modules
@@ -20,6 +24,12 @@ COPY . /var/www/html/
 RUN mkdir -p /var/www/html/data && \
     chown -R www-data:www-data /var/www/html/data && \
     chmod -R 777 /var/www/html/data
+
+# Configure PHP settings
+RUN echo "memory_limit = \${PHP_MEMORY_LIMIT:-256M}" > /usr/local/etc/php/conf.d/docker-php-settings.ini && \
+    echo "upload_max_filesize = \${PHP_UPLOAD_MAX_FILESIZE:-64M}" >> /usr/local/etc/php/conf.d/docker-php-settings.ini && \
+    echo "post_max_size = \${PHP_POST_MAX_SIZE:-64M}" >> /usr/local/etc/php/conf.d/docker-php-settings.ini && \
+    echo "max_execution_time = \${PHP_MAX_EXECUTION_TIME:-300}" >> /usr/local/etc/php/conf.d/docker-php-settings.ini
 
 # Set working directory
 WORKDIR /var/www/html

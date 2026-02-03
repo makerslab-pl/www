@@ -103,7 +103,7 @@ class WebApplicationTest extends TestCase
     {
         // Test that we can connect to the database using the configuration
         try {
-            $pdo = new PDO('sqlite:' . TEST_DB_PATH);
+            $pdo = new \PDO('sqlite:' . TEST_DB_PATH);
             $this->assertInstanceOf(\PDO::class, $pdo);
             
             // Test basic query

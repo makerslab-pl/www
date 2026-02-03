@@ -298,7 +298,22 @@ class Database {
             ['cta_text', 'Zapisz się na zajęcia próbne'],
             ['price_individual', '150 zł / 90 min'],
             ['price_group', '80 zł / 90 min'],
-            ['location', 'Trójmiasto (Gdańsk, Sopot, Gdynia) lub Online']
+            ['location', 'Trójmiasto (Gdańsk, Sopot, Gdynia) lub Online'],
+            ['feature_age', 'Od 10 lat'],
+            ['feature_method', 'Nauka przez projekty'],
+            ['hero_badge_top', '8 tygodni'],
+            ['hero_badge_bottom', 'Arduino'],
+            ['hero_card_title', 'Program 2-miesięczny'],
+            ['hero_card_description', 'Od migającej diody do robota omijającego przeszkody'],
+            ['program_title', '8 tygodni praktycznej nauki'],
+            ['program_subtitle', 'Każdy tydzień to nowy projekt - od podstaw do zaawansowanej robotyki'],
+            ['program_month1_title', 'Fundamenty'],
+            ['program_month1_desc', 'Podstawy elektroniki i programowania Arduino'],
+            ['program_month2_title', 'Integracja'],
+            ['program_month2_desc', 'Zaawansowane projekty i własne prototypy'],
+            ['pricing_group_features', 'Grupy 4-6 osób,Wspólne projekty,Nauka współpracy,Wymiana doświadczeń,Materiały w cenie'],
+            ['pricing_indiv_features', 'Tempo dopasowane do dziecka,Elastyczne terminy,100% uwagi mentora,Własne projekty,Materiały w cenie,Online lub stacjonarnie'],
+            ['footer_about', 'Warsztaty robotyki i elektroniki dla dzieci w Trójmieście i online. Uczymy przez projekty - Arduino, programowanie, prototypowanie.']
         ];
 
         $stmt = $this->db->prepare("INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)");

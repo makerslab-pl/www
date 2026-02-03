@@ -4,8 +4,8 @@
  * Warsztaty robotyki i elektroniki dla dzieci
  */
 
-session_start();
 require_once __DIR__ . '/config.php';
+session_start();
 require_once __DIR__ . '/includes/database.php';
 
 $db = Database::getInstance();
@@ -45,6 +45,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_form'])) {
         } else {
             if ($db->saveContact($contactData)) {
                 $formSuccess = true;
+                
+                // Powiadomienie email (jeśli włączone w config)
+                if (EMAIL_NOTIFICATIONS) {
+                    $to = CONTACT_EMAIL;
+                    $subject = EMAIL_SUBJECT;
+                    $body = "Nowe zgłoszenie z formularza MakersLab:\n\n" .
+                            "Rodzic: {$contactData['parent_name']}\n" .
+                            "Dziecko: {$contactData['child_name']} ({$contactData['child_age']} lat)\n" .
+                            "Email: {$contactData['email']}\n" .
+                            "Telefon: {$contactData['phone']}\n" .
+                            "Forma: {$contactData['preferred_mode']}\n\n" .
+                            "Wiadomość:\n{$contactData['message']}";
+                    $headers = "From: no-reply@" . parse_url(SITE_URL, PHP_URL_HOST) . "\r\n" .
+                               "Reply-To: {$contactData['email']}\r\n" .
+                               "X-Mailer: PHP/" . phpversion();
+                    
+                    @mail($to, $subject, $body, $headers);
+                }
             } else {
                 $formError = 'Wystąpił błąd. Spróbuj ponownie.';
             }
@@ -60,7 +78,19 @@ $csrfToken = generateCSRFToken();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= SITE_NAME ?> - <?= SITE_TAGLINE ?></title>
-    <meta name="description" content="Warsztaty robotyki i elektroniki dla dzieci w Trójmieście i online. Arduino, programowanie, prototypy - nauka przez projekty.">
+    <meta name="description" content="<?= SITE_DESCRIPTION ?>">
+    <meta name="keywords" content="<?= SITE_KEYWORDS ?>">
+    
+    <?php if (!empty(GA_ID)): ?>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=<?= GA_ID ?>"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '<?= GA_ID ?>');
+    </script>
+    <?php endif; ?>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1204,29 +1234,28 @@ $csrfToken = generateCSRFToken();
             <div class="hero-content">
                 <div class="hero-text">
                     <h1>
-                        Warsztaty <span class="highlight">robotyki</span><br>
-                        dla dzieci
+                        <?= $db->getSetting('hero_title', 'Warsztaty <span class="highlight">robotyki</span><br>dla dzieci') ?>
                     </h1>
                     <p class="hero-subtitle">
-                        <?= htmlspecialchars($db->getSetting('about_text', 'Nauka przez budowanie - Arduino, elektronika, prototypy. Każde zajęcia to nowy projekt, który dziecko zabiera do domu.')) ?>
+                        <?= htmlspecialchars($db->getSetting('hero_subtitle', 'Nauka przez budowanie - Arduino, elektronika, prototypy. Każde zajęcia to nowy projekt, który dziecko zabiera do domu.')) ?>
                     </p>
                     <div class="hero-features">
                         <div class="hero-feature">
                             <span class="hero-feature-icon">🎯</span>
-                            <span>Od 10 lat</span>
+                            <span><?= htmlspecialchars($db->getSetting('feature_age', 'Od 10 lat')) ?></span>
                         </div>
                         <div class="hero-feature">
                             <span class="hero-feature-icon">🏠</span>
-                            <span>Trójmiasto / Online</span>
+                            <span><?= htmlspecialchars(CONTACT_LOCATION) ?></span>
                         </div>
                         <div class="hero-feature">
                             <span class="hero-feature-icon">🔧</span>
-                            <span>Nauka przez projekty</span>
+                            <span><?= htmlspecialchars($db->getSetting('feature_method', 'Nauka przez projekty')) ?></span>
                         </div>
                     </div>
                     <div class="hero-buttons">
                         <a href="#kontakt" class="btn btn-primary">
-                            Zapisz na zajęcia próbne
+                            <?= htmlspecialchars($db->getSetting('cta_text', 'Zapisz na zajęcia próbne')) ?>
                             <span>→</span>
                         </a>
                         <a href="#program" class="btn btn-secondary">
@@ -1236,12 +1265,12 @@ $csrfToken = generateCSRFToken();
                 </div>
                 <div class="hero-visual">
                     <div class="hero-card">
-                        <div class="floating-badge top-right">8 tygodni</div>
-                        <div class="floating-badge bottom-left">Arduino</div>
+                        <div class="floating-badge top-right"><?= htmlspecialchars($db->getSetting('hero_badge_top', '8 tygodni')) ?></div>
+                        <div class="floating-badge bottom-left"><?= htmlspecialchars($db->getSetting('hero_badge_bottom', 'Arduino')) ?></div>
                         <div class="circuit-icon">🤖</div>
                         <div class="hero-card-text">
-                            <h3>Program 2-miesięczny</h3>
-                            <p>Od migającej diody do robota omijającego przeszkody</p>
+                            <h3><?= htmlspecialchars($db->getSetting('hero_card_title', 'Program 2-miesięczny')) ?></h3>
+                            <p><?= htmlspecialchars($db->getSetting('hero_card_description', 'Od migającej diody do robota omijającego przeszkody')) ?></p>
                         </div>
                     </div>
                 </div>
@@ -1254,8 +1283,8 @@ $csrfToken = generateCSRFToken();
         <div class="container">
             <div class="section-header">
                 <span class="section-badge">// PROGRAM ZAJĘĆ</span>
-                <h2 class="section-title">8 tygodni praktycznej nauki</h2>
-                <p class="section-subtitle">Każdy tydzień to nowy projekt - od podstaw do zaawansowanej robotyki</p>
+                <h2 class="section-title"><?= htmlspecialchars($db->getSetting('program_title', '8 tygodni praktycznej nauki')) ?></h2>
+                <p class="section-subtitle"><?= htmlspecialchars($db->getSetting('program_subtitle', 'Każdy tydzień to nowy projekt - od podstaw do zaawansowanej robotyki')) ?></p>
             </div>
 
             <?php foreach ($modulesByMonth as $month => $monthModules): ?>
@@ -1263,8 +1292,8 @@ $csrfToken = generateCSRFToken();
                 <div class="month-header">
                     <div class="month-number"><?= $month ?></div>
                     <div class="month-info">
-                        <h3>Miesiąc <?= $month ?>: <?= $month == 1 ? 'Fundamenty' : 'Integracja' ?></h3>
-                        <p><?= $month == 1 ? 'Podstawy elektroniki i programowania Arduino' : 'Zaawansowane projekty i własne prototypy' ?></p>
+                        <h3>Miesiąc <?= $month ?>: <?= htmlspecialchars($db->getSetting("program_month{$month}_title", $month == 1 ? 'Fundamenty' : 'Integracja')) ?></h3>
+                        <p><?= htmlspecialchars($db->getSetting("program_month{$month}_desc", $month == 1 ? 'Podstawy elektroniki i programowania Arduino' : 'Zaawansowane projekty i własne prototypy')) ?></p>
                     </div>
                 </div>
                 <div class="modules-grid">
@@ -1368,11 +1397,9 @@ $csrfToken = generateCSRFToken();
                     <p class="pricing-price"><?= htmlspecialchars($db->getSetting('price_group', '80 zł')) ?></p>
                     <p class="pricing-duration">za 90 minut</p>
                     <ul class="pricing-features">
-                        <li>Grupy 4-6 osób</li>
-                        <li>Wspólne projekty</li>
-                        <li>Nauka współpracy</li>
-                        <li>Wymiana doświadczeń</li>
-                        <li>Materiały w cenie</li>
+                        <?php foreach (explode(',', $db->getSetting('pricing_group_features', 'Grupy 4-6 osób,Wspólne projekty,Nauka współpracy,Wymiana doświadczeń,Materiały w cenie')) as $feature): ?>
+                        <li><?= htmlspecialchars(trim($feature)) ?></li>
+                        <?php endforeach; ?>
                     </ul>
                     <a href="#kontakt" class="btn btn-primary">Zapisz się</a>
                 </div>
@@ -1382,12 +1409,9 @@ $csrfToken = generateCSRFToken();
                     <p class="pricing-price"><?= htmlspecialchars($db->getSetting('price_individual', '150 zł')) ?></p>
                     <p class="pricing-duration">za 90 minut</p>
                     <ul class="pricing-features">
-                        <li>Tempo dopasowane do dziecka</li>
-                        <li>Elastyczne terminy</li>
-                        <li>100% uwagi mentora</li>
-                        <li>Własne projekty</li>
-                        <li>Materiały w cenie</li>
-                        <li>Online lub stacjonarnie</li>
+                        <?php foreach (explode(',', $db->getSetting('pricing_indiv_features', 'Tempo dopasowane do dziecka,Elastyczne terminy,100% uwagi mentora,Własne projekty,Materiały w cenie,Online lub stacjonarnie')) as $feature): ?>
+                        <li><?= htmlspecialchars(trim($feature)) ?></li>
+                        <?php endforeach; ?>
                     </ul>
                     <a href="#kontakt" class="btn btn-primary">Zapisz się</a>
                 </div>
@@ -1510,8 +1534,7 @@ $csrfToken = generateCSRFToken();
                 <div class="footer-brand">
                     <a href="#" class="logo">MAKERS<span>LAB</span></a>
                     <p>
-                        Warsztaty robotyki i elektroniki dla dzieci w Trójmieście i online. 
-                        Uczymy przez projekty - Arduino, programowanie, prototypowanie.
+                        <?= htmlspecialchars($db->getSetting('footer_about', 'Warsztaty robotyki i elektroniki dla dzieci w Trójmieście i online. Uczymy przez projekty - Arduino, programowanie, prototypowanie.')) ?>
                     </p>
                 </div>
                 <div class="footer-links">

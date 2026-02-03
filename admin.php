@@ -4,8 +4,8 @@
  * Zarządzanie modułami, zestawami i ustawieniami
  */
 
-session_start();
 require_once __DIR__ . '/config.php';
+session_start();
 require_once __DIR__ . '/includes/database.php';
 
 $db = Database::getInstance();
@@ -158,7 +158,22 @@ if ($isLoggedIn && $_SERVER['REQUEST_METHOD'] === 'POST') {
                 'cta_text' => $_POST['cta_text'] ?? '',
                 'price_individual' => $_POST['price_individual'] ?? '',
                 'price_group' => $_POST['price_group'] ?? '',
-                'location' => $_POST['location'] ?? ''
+                'location' => $_POST['location'] ?? '',
+                'feature_age' => $_POST['feature_age'] ?? '',
+                'feature_method' => $_POST['feature_method'] ?? '',
+                'hero_badge_top' => $_POST['hero_badge_top'] ?? '',
+                'hero_badge_bottom' => $_POST['hero_badge_bottom'] ?? '',
+                'hero_card_title' => $_POST['hero_card_title'] ?? '',
+                'hero_card_description' => $_POST['hero_card_description'] ?? '',
+                'program_title' => $_POST['program_title'] ?? '',
+                'program_subtitle' => $_POST['program_subtitle'] ?? '',
+                'program_month1_title' => $_POST['program_month1_title'] ?? '',
+                'program_month1_desc' => $_POST['program_month1_desc'] ?? '',
+                'program_month2_title' => $_POST['program_month2_title'] ?? '',
+                'program_month2_desc' => $_POST['program_month2_desc'] ?? '',
+                'pricing_group_features' => $_POST['pricing_group_features'] ?? '',
+                'pricing_indiv_features' => $_POST['pricing_indiv_features'] ?? '',
+                'footer_about' => $_POST['footer_about'] ?? ''
             ];
 
             foreach ($settings as $key => $value) {
@@ -1223,6 +1238,111 @@ $csrfToken = generateCSRFToken();
                                    value="<?= htmlspecialchars($db->getSetting('location')) ?>">
                         </div>
 
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Cechy: Wiek (Hero)</label>
+                                <input type="text" name="feature_age" class="form-input"
+                                       value="<?= htmlspecialchars($db->getSetting('feature_age')) ?>"
+                                       placeholder="Od 10 lat">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Cechy: Metoda (Hero)</label>
+                                <input type="text" name="feature_method" class="form-input"
+                                       value="<?= htmlspecialchars($db->getSetting('feature_method')) ?>"
+                                       placeholder="Nauka przez projekty">
+                            </div>
+                        </div>
+
+                        <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 30px 0;">
+                        <h3 style="margin-bottom: 20px;">🖼️ Karta Hero (Prawa strona)</h3>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Górna etykieta (np. 8 tygodni)</label>
+                                <input type="text" name="hero_badge_top" class="form-input"
+                                       value="<?= htmlspecialchars($db->getSetting('hero_badge_top')) ?>">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Dolna etykieta (np. Arduino)</label>
+                                <input type="text" name="hero_badge_bottom" class="form-input"
+                                       value="<?= htmlspecialchars($db->getSetting('hero_badge_bottom')) ?>">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Tytuł karty</label>
+                            <input type="text" name="hero_card_title" class="form-input"
+                                   value="<?= htmlspecialchars($db->getSetting('hero_card_title')) ?>">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Opis karty</label>
+                            <input type="text" name="hero_card_description" class="form-input"
+                                   value="<?= htmlspecialchars($db->getSetting('hero_card_description')) ?>">
+                        </div>
+
+                        <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 30px 0;">
+                        <h3 style="margin-bottom: 20px;">📚 Sekcja Programu</h3>
+
+                        <div class="form-group">
+                            <label class="form-label">Tytuł sekcji program</label>
+                            <input type="text" name="program_title" class="form-input"
+                                   value="<?= htmlspecialchars($db->getSetting('program_title')) ?>">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Podtytuł sekcji program</label>
+                            <input type="text" name="program_subtitle" class="form-input"
+                                   value="<?= htmlspecialchars($db->getSetting('program_subtitle')) ?>">
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Miesiąc 1: Tytuł</label>
+                                <input type="text" name="program_month1_title" class="form-input"
+                                       value="<?= htmlspecialchars($db->getSetting('program_month1_title')) ?>">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Miesiąc 1: Opis</label>
+                                <input type="text" name="program_month1_desc" class="form-input"
+                                       value="<?= htmlspecialchars($db->getSetting('program_month1_desc')) ?>">
+                            </div>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Miesiąc 2: Tytuł</label>
+                                <input type="text" name="program_month2_title" class="form-input"
+                                       value="<?= htmlspecialchars($db->getSetting('program_month2_title')) ?>">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Miesiąc 2: Opis</label>
+                                <input type="text" name="program_month2_desc" class="form-input"
+                                       value="<?= htmlspecialchars($db->getSetting('program_month2_desc')) ?>">
+                            </div>
+                        </div>
+
+                        <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 30px 0;">
+                        <h3 style="margin-bottom: 20px;">💰 Cennik - Cechy</h3>
+
+                        <div class="form-group">
+                            <label class="form-label">Cechy zajęć grupowych (oddzielone przecinkami)</label>
+                            <textarea name="pricing_group_features" class="form-textarea" rows="3"><?= htmlspecialchars($db->getSetting('pricing_group_features')) ?></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Cechy zajęć indywidualnych (oddzielone przecinkami)</label>
+                            <textarea name="pricing_indiv_features" class="form-textarea" rows="3"><?= htmlspecialchars($db->getSetting('pricing_indiv_features')) ?></textarea>
+                        </div>
+
+                        <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 30px 0;">
+                        <h3 style="margin-bottom: 20px;">🏢 Stopka</h3>
+
+                        <div class="form-group">
+                            <label class="form-label">O nas (stopka)</label>
+                            <textarea name="footer_about" class="form-textarea" rows="3"><?= htmlspecialchars($db->getSetting('footer_about')) ?></textarea>
+                        </div>
+
                         <button type="submit" name="save_settings" class="btn btn-primary">
                             💾 Zapisz ustawienia
                         </button>
@@ -1240,7 +1360,8 @@ $csrfToken = generateCSRFToken();
                     <p><strong>Zestawy:</strong> <?= count($starterKits) ?></p>
                     <p><strong>Zgłoszenia:</strong> <?= count($contacts) ?></p>
                     <p style="margin-top: 15px; color: var(--gray); font-size: 0.9rem;">
-                        Aby zmienić dane kontaktowe (email, telefon, social media), edytuj plik <code>config.php</code>
+                        Aplikacja jest skonfigurowana za pomocą zmiennych środowiskowych (plik <code>.env</code>). 
+                        Możesz tam zmienić: dane kontaktowe, ustawienia SEO, analitykę, powiadomienia email oraz czas trwania sesji.
                     </p>
                 </div>
             </div>
