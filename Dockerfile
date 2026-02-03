@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     libzip-dev \
     zip \
+    libonig-dev \
     && docker-php-ext-install pdo_sqlite dom xml xmlwriter mbstring tokenizer \
     && docker-php-ext-configure zip --with-libzip \
     && docker-php-ext-install zip \
