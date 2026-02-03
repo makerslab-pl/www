@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a0f"/>
+      <stop offset="100%" style="stop-color:#12121a"/>
+    </linearGradient>
+    <linearGradient id="neonGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00ff88"/>
+      <stop offset="100%" style="stop-color:#00d4ff"/>
+    </linearGradient>
+    <linearGradient id="neonOrange" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff6b35"/>
+      <stop offset="100%" style="stop-color:#ff8c5a"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="600" height="400" fill="url(#bgGrad)"/>
+  
+  <!-- Grid pattern -->
+  <pattern id="heroGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(0,255,136,0.05)" stroke-width="1"/>
+  </pattern>
+  <rect width="600" height="400" fill="url(#heroGrid)"/>
+  
+  <!-- Decorative circles -->
+  <circle cx="500" cy="100" r="150" fill="none" stroke="rgba(0,255,136,0.1)" stroke-width="1"/>
+  <circle cx="500" cy="100" r="100" fill="none" stroke="rgba(0,212,255,0.1)" stroke-width="1"/>
+  <circle cx="100" cy="350" r="80" fill="none" stroke="rgba(255,107,53,0.1)" stroke-width="1"/>
+  
+  <!-- Robot body -->
+  <g transform="translate(200, 80)">
+    <!-- Body frame -->
+    <rect x="50" y="100" width="100" height="120" rx="10" fill="#1a1a25" stroke="url(#neonGreen)" stroke-width="2" filter="url(#glow)"/>
+    
+    <!-- Head -->
+    <rect x="40" y="20" width="120" height="80" rx="10" fill="#1a1a25" stroke="url(#neonGreen)" stroke-width="2" filter="url(#glow)"/>
+    
+    <!-- Eyes -->
+    <circle cx="75" cy="55" r="15" fill="url(#neonGreen)" filter="url(#glow)"/>
+    <circle cx="125" cy="55" r="15" fill="url(#neonGreen)" filter="url(#glow)"/>
+    <circle cx="75" cy="55" r="6" fill="#0a0a0f"/>
+    <circle cx="125" cy="55" r="6" fill="#0a0a0f"/>
+    
+    <!-- Antenna -->
+    <line x1="100" y1="20" x2="100" y2="-10" stroke="url(#neonGreen)" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="100" cy="-15" r="8" fill="url(#neonOrange)" filter="url(#glow)"/>
+    
+    <!-- Mouth -->
+    <rect x="65" y="75" width="70" height="15" rx="3" fill="#0a0a0f"/>
+    <rect x="72" y="80" width="10" height="5" fill="url(#neonGreen)"/>
+    <rect x="95" y="80" width="10" height="5" fill="url(#neonGreen)"/>
+    <rect x="118" y="80" width="10" height="5" fill="url(#neonGreen)"/>
+    
+    <!-- Body details -->
+    <circle cx="80" cy="140" r="8" fill="url(#neonOrange)" filter="url(#glow)"/>
+    <circle cx="100" cy="140" r="8" fill="url(#neonGreen)" filter="url(#glow)"/>
+    <circle cx="120" cy="140" r="8" fill="url(#neonOrange)" filter="url(#glow)"/>
+    
+    <!-- Arms -->
+    <rect x="0" y="110" width="45" height="15" rx="7" fill="#1a1a25" stroke="url(#neonGreen)" stroke-width="2"/>
+    <rect x="155" y="110" width="45" height="15" rx="7" fill="#1a1a25" stroke="url(#neonGreen)" stroke-width="2"/>
+    <circle cx="0" cy="117" r="10" fill="url(#neonOrange)"/>
+    <circle cx="200" cy="117" r="10" fill="url(#neonOrange)"/>
+    
+    <!-- Wheels -->
+    <ellipse cx="70" cy="235" rx="25" ry="15" fill="#1a1a25" stroke="url(#neonGreen)" stroke-width="2"/>
+    <ellipse cx="130" cy="235" rx="25" ry="15" fill="#1a1a25" stroke="url(#neonGreen)" stroke-width="2"/>
+    <line x1="70" y1="220" x2="70" y2="250" stroke="url(#neonGreen)" stroke-width="2"/>
+    <line x1="130" y1="220" x2="130" y2="250" stroke="url(#neonGreen)" stroke-width="2"/>
+  </g>
+  
+  <!-- Floating elements -->
+  <g filter="url(#glow)">
+    <!-- Code brackets -->
+    <text x="50" y="100" fill="url(#neonGreen)" font-family="monospace" font-size="30" opacity="0.5">&lt;/&gt;</text>
+    <text x="480" y="300" fill="url(#neonOrange)" font-family="monospace" font-size="24" opacity="0.5">{...}</text>
+    
+    <!-- Circuit elements -->
+    <circle cx="520" cy="180" r="5" fill="url(#neonGreen)"/>
+    <circle cx="550" cy="200" r="3" fill="url(#neonOrange)"/>
+    <line x1="520" y1="185" x2="520" y2="220" stroke="url(#neonGreen)" stroke-width="1"/>
+    <line x1="520" y1="220" x2="550" y2="220" stroke="url(#neonGreen)" stroke-width="1"/>
+    <line x1="550" y1="203" x2="550" y2="220" stroke="url(#neonGreen)" stroke-width="1"/>
+  </g>
+  
+  <!-- Text -->
+  <text x="300" y="370" text-anchor="middle" fill="url(#neonGreen)" font-family="'Orbitron', sans-serif" font-size="14" letter-spacing="3">MAKERS LAB • ROBOTYKA DLA DZIECI</text>
+</svg>
