@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  makerslab-tests:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: makerslab-tests
+    volumes:
+      - .:/var/www/html
+    working_dir: /var/www/html
+    command: ["tail", "-f", "/dev/null"]  # Keep container running
+    environment:
+      - TEST_MODE=1
+      - DB_PATH=/var/www/html/tests/test.db

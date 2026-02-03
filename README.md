@@ -35,8 +35,12 @@ makerslab/
 ### Wymagania
 - PHP 7.4+ z rozszerzeniem SQLite (PDO)
 - Serwer Apache z mod_rewrite (lub nginx)
+- Docker i Docker Compose (opcjonalnie, dla środowiska deweloperskiego)
+- Composer (dla testów)
 
 ### Kroki instalacji
+
+#### Sposób 1: Tradycyjny instalacja
 
 1. **Skopiuj pliki na serwer:**
    ```bash
@@ -66,6 +70,42 @@ makerslab/
 5. **Otwórz stronę:**
    - Strona główna: `https://makerslab.pl/`
    - Panel CMS: `https://makerslab.pl/admin.php`
+
+#### Sposób 2: Docker (zalecane dla deweloperów)
+
+1. **Sklonuj repozytorium:**
+   ```bash
+   git clone <repository-url>
+   cd makerslab
+   ```
+
+2. **Uruchom aplikację:**
+   ```bash
+   docker-compose up -d
+   ```
+
+3. **Otwórz stronę:**
+   - Strona główna: `http://localhost:8080/`
+   - Panel CMS: `http://localhost:8080/admin.php`
+
+4. **Zatrzymaj aplikację:**
+   ```bash
+   docker-compose down
+   ```
+
+#### Zmienne środowiskowe Docker
+
+Możesz skonfigurować aplikację używając zmiennych środowiskowych:
+
+```bash
+# Utwórz plik .env
+echo "ADMIN_PASSWORD=twoje_bezpieczne_haslo" > .env
+echo "CONTACT_EMAIL=twoj@email.pl" >> .env
+echo "CONTACT_PHONE=+48 123 456 789" >> .env
+
+# Uruchom z konfiguracją
+docker-compose up -d
+```
 
 ## 🔧 Konfiguracja
 
@@ -170,6 +210,56 @@ Zamień tekst logo na obrazek w `index.php`:
     <img src="assets/images/logo.png" alt="MakersLab" height="40">
 </a>
 ```
+
+## 🧪 Testy
+
+Projekt zawiera zestaw testów jednostkowych i integracyjnych przygotowanych w PHPUnit.
+
+### Uruchamianie testów
+
+1. **Zainstaluj zależności deweloperskie:**
+   ```bash
+   composer install
+   ```
+
+2. **Uruchom wszystkie testy:**
+   ```bash
+   composer test
+   # lub
+   phpunit
+   ```
+
+3. **Uruchom testy z pokryciem kodu:**
+   ```bash
+   composer test-coverage
+   # lub
+   phpunit --coverage-html coverage
+   ```
+
+### Testy w Docker
+
+Możesz uruchomić testy w kontenerze Docker:
+
+```bash
+# Uruchom kontener testowy
+docker-compose --profile testing up --build
+
+# Uruchom testy w kontenerze
+docker-compose exec makerslab-tests composer install
+docker-compose exec makerslab-tests composer test
+```
+
+### Struktura testów
+
+- **tests/Unit** - Testy jednostkowe (np. testy klasy Database)
+- **tests/Integration** - Testy integracyjne (np. testy całej aplikacji)
+
+### Dodawanie nowych testów
+
+1. Twórz testy jednostkowe w `tests/Unit/`
+2. Twórz testy integracyjne w `tests/Integration/`
+3. Nazwij pliki testowe z sufiksem `Test.php`
+4. Klasy testowe powinny dziedziczyć po `PHPUnit\Framework\TestCase`
 
 ## 📊 Backup bazy danych
 

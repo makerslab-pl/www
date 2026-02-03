@@ -1,0 +1,14 @@
+.git
+.gitignore
+.idea
+README.md
+README1.md
+Dockerfile
+docker-compose.yml
+.dockerignore
+tests/
+composer.json
+composer.lock
+vendor/
+data/makerslab.db
+data/makerslab_backup_*.db

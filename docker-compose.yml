@@ -1,0 +1,36 @@
+services:
+  makerslab-app:
+    build: .
+    container_name: makerslab-php
+    ports:
+      - "8080:80"
+    volumes:
+      - ./data:/var/www/html/data
+      - ./assets:/var/www/html/assets
+    environment:
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-makerslab2024}
+      - CONTACT_EMAIL=${CONTACT_EMAIL:-kontakt@makerslab.pl}
+      - CONTACT_PHONE=${CONTACT_PHONE:-+48 123 456 789}
+      - SITE_URL=${SITE_URL:-http://localhost:8080}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  makerslab-tests:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: makerslab-tests
+    volumes:
+      - .:/var/www/html
+    working_dir: /var/www/html
+    command: ["tail", "-f", "/dev/null"]  # Keep container running for manual testing
+    profiles:
+      - testing
+    environment:
+      - TEST_MODE=1
+      - DB_PATH=/var/www/html/tests/test.db
