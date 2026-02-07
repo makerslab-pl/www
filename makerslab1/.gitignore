@@ -1,0 +1,66 @@
+# MakersLab - .gitignore
+
+# Zależności
+/vendor/
+/node_modules/
+
+# Baza danych
+/data/*.db
+/data/*.sqlite
+!/data/.gitkeep
+
+# Pokrycie testów
+/coverage/
+coverage.txt
+coverage.xml
+test-results.xml
+.phpunit.cache/
+.phpunit.result.cache
+
+# IDE
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+.project
+.settings/
+
+# System
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Logi
+*.log
+/logs/
+
+# Cache
+*.cache
+/cache/
+
+# Środowisko
+.env
+.env.local
+.env.*.local
+
+# Backupy
+/backups/
+*.bak
+*.backup
+
+# Pliki tymczasowe
+*.tmp
+*.temp
+/tmp/
+
+# Composer
+composer.lock
+# Odkomentuj powyższe jeśli to biblioteka, zostaw zakomentowane dla projektu
+
+# PHPStan
+phpstan.neon.dist
+
+# Docker
+docker-compose.override.yml

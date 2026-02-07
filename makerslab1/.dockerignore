@@ -1,0 +1,64 @@
+# MakersLab - .dockerignore
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+README.md
+CHANGELOG.md
+LICENSE
+docs/
+
+# Tests (nie potrzebne w produkcji)
+tests/
+phpunit.xml
+.phpunit.cache/
+coverage/
+
+# Development files
+Makefile
+docker-compose.yml
+docker-compose.override.yml
+Dockerfile.test
+
+# IDE
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Dependencies (będą zainstalowane w kontenerze)
+vendor/
+node_modules/
+
+# Database (będzie zamontowana jako volume)
+data/*.db
+
+# Logs
+*.log
+logs/
+
+# Cache
+*.cache
+cache/
+
+# Backups
+backups/
+*.bak
+
+# System files
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# Environment
+.env
+.env.*
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml

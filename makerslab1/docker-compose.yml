@@ -1,0 +1,82 @@
+# MakersLab - Docker Compose
+# Uruchomienie: docker-compose up -d
+
+services:
+  # Główna aplikacja PHP + Apache
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: makerslab-app
+    ports:
+      - "${PORT:-8080}:80"
+    volumes:
+      # Montowanie kodu źródłowego (dev mode)
+      - ./index.php:/var/www/html/index.php
+      - ./admin.php:/var/www/html/admin.php
+      - ./bootstrap.php:/var/www/html/bootstrap.php
+      - ./config.php:/var/www/html/config.php
+      - ./.htaccess:/var/www/html/.htaccess
+      - ./includes:/var/www/html/includes
+      - ./assets:/var/www/html/assets
+      # Dane persystentne
+      - makerslab-data:/var/www/html/data
+    env_file:
+      - .env
+    environment:
+      - PHP_DISPLAY_ERRORS=${PHP_DISPLAY_ERRORS:-0}
+      - PHP_ERROR_REPORTING=${PHP_ERROR_REPORTING:-E_ALL}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - makerslab-network
+
+  # Środowisko testowe
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    container_name: makerslab-test
+    volumes:
+      - .:/var/www/html
+      - ./tests:/var/www/html/tests
+    env_file:
+      - .env
+    environment:
+      - PHP_DISPLAY_ERRORS=1
+      - TESTING=true
+      - APP_ENV=testing
+    depends_on:
+      - app
+    networks:
+      - makerslab-network
+    profiles:
+      - testing
+
+  # Adminer - GUI do bazy danych (opcjonalne)
+  adminer:
+    image: adminer:latest
+    container_name: makerslab-adminer
+    ports:
+      - "${ADMINER_PORT:-8081}:8080"
+    environment:
+      - ADMINER_DEFAULT_SERVER=app
+    depends_on:
+      - app
+    networks:
+      - makerslab-network
+    profiles:
+      - dev
+
+volumes:
+  makerslab-data:
+    driver: local
+
+networks:
+  makerslab-network:
+    driver: bridge
